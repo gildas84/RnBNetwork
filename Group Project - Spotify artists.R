@@ -15,6 +15,8 @@ setwd("C:/Users/Gildas/OneDrive/MSC SUSDEV/NAI")
 
 tracklist2 <- tracklist %>%
   select("id", "CORRECTED_ARTISTS") %>% separate_rows("CORRECTED_ARTISTS", sep = ";") 
+tracklist2 <- tracklist2[!(tracklist2$CORRECTED_ARTISTS==""),]
+tracklist2
 
  # check later if unique ID
 
