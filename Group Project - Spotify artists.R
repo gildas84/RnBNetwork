@@ -1,4 +1,3 @@
-
 rm(list=ls())
 library(igraph)
 library(tidyverse)                                                     
@@ -13,9 +12,31 @@ View(tracklist)
 setwd("C:/Users/Gildas/OneDrive/MSC SUSDEV/NAI")
 
 
-library(readxl)
-data_from_excel <- read_xlsx("data.xlsx", sheet = "data")
-View(data_from_excel)
+tracklist %>%
+  select("id", "CORRECTED_ARTISTS") %>% separate_rows("CORRECTED_ARTISTS", sep = ";") 
+
+ # chekc later if unique ID
+
+
+
+PO <- as.matrix(table(tracklist$id, tracklist$CORRECTED_ARTISTS))                         #Obtain project-organisation matrix from dataframe
+OO <- t(PO)%*%PO                                                        #Adjacency matrix (organisation-organisation)
+PP <- PO%*%t(PO)                                                        #Adjacency matrix (project-project)
+
+
+
+#12.Organisation network  ----------
+diag(OO) <- 0                                                           #Set diagonal to 0 (no self-loops)
+OO_g <- graph_from_adjacency_matrix(OO, mode = "undirected")            #Obtain graph from adjacency matrix
+plot(OO_g)  
+
+#13.Project network  ----------
+diag(PP) <- 0                                                           #Set diagonal to 0 (no self-loops)
+PP_g <- graph_from_adjacency_matrix(PP, mode = "undirected")            #Obtain graph from adjacency matrix
+plot(PP_g)                                                              #Plot network
+
+
+
 
 
 #> NExt : create edgelist prior to matrix (see Seminar 4 script)
@@ -23,9 +44,3 @@ View(data_from_excel)
 #lets make a loop to create the edgelist
 
 tracks_number = cotracklist
-
-for(i in 1:tracks_number) {                                                    
-  gr     <- erdos.renyi.game(N, E, type = "gnm")
-  apl[i] <- mean_distance(gr)
-  cl[i]  <- transitivity(gr, type = "average")
-}
