@@ -1,3 +1,4 @@
+
 rm(list=ls())
 library(igraph)
 library(tidyverse)                                                     
@@ -12,26 +13,24 @@ View(tracklist)
 setwd("C:/Users/Gildas/OneDrive/MSC SUSDEV/NAI")
 
 
-tracklist %>%
+tracklist2 <- tracklist %>%
   select("id", "CORRECTED_ARTISTS") %>% separate_rows("CORRECTED_ARTISTS", sep = ";") 
 
- # chekc later if unique ID
+ # check later if unique ID
 
 
 
-PO <- as.matrix(table(tracklist$id, tracklist$CORRECTED_ARTISTS))                         #Obtain project-organisation matrix from dataframe
-OO <- t(PO)%*%PO                                                        #Adjacency matrix (organisation-organisation)
-PP <- PO%*%t(PO)                                                        #Adjacency matrix (project-project)
+PO <- as.matrix(table(tracklist2$id, tracklist2$CORRECTED_ARTISTS))       #Obtain project-organisation matrix from dataframe
+OO <- t(PO)%*%PO                                                        #Adjacency matrix (artists-artists)
+#PP <- PO%*%t(PO)                                                        #Adjacency matrix (project-project)
 
 
 
-#12.Organisation network  ----------
-diag(OO) <- 0                                                           #Set diagonal to 0 (no self-loops)
+#.Artists network  ----------
+diag(OO) <- 0                                                          #Set diagonal to 0 (no self-loops)
 OO_g <- graph_from_adjacency_matrix(OO, mode = "undirected")            #Obtain graph from adjacency matrix
-plot(OO_g)  
+plot(OO_g)
 
-#13.Project network  ----------
-diag(PP) <- 0                                                           #Set diagonal to 0 (no self-loops)
-PP_g <- graph_from_adjacency_matrix(PP, mode = "undirected")            #Obtain graph from adjacency matrix
-plot(PP_g)                                                              #Plot network
+
+
 
