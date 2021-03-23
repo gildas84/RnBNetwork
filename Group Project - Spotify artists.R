@@ -35,12 +35,3 @@ diag(PP) <- 0                                                           #Set dia
 PP_g <- graph_from_adjacency_matrix(PP, mode = "undirected")            #Obtain graph from adjacency matrix
 plot(PP_g)                                                              #Plot network
 
-
-
-
-
-#> NExt : create edgelist prior to matrix (see Seminar 4 script)
-
-#lets make a loop to create the edgelist
-
-tracks_number = cotracklist
