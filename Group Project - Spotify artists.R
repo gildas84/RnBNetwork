@@ -11,6 +11,7 @@ tracklist <- read_xlsx("FILTERED DB.xlsx", sheet = "DATA")
 View(tracklist)
 
 tracklist2 <- tracklist %>%
+  filter(year > 1990 & year < 2000)  %>%
   select("id", "CORRECTED_ARTISTS") %>% separate_rows("CORRECTED_ARTISTS", sep = ";") 
 tracklist2 <- tracklist2[!(tracklist2$CORRECTED_ARTISTS==""),]
 tracklist2
