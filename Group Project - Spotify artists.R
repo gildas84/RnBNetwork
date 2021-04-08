@@ -118,8 +118,7 @@ plot(OO_g, layout = l_kk, vertex.label=NA)
       isolates_g
       inclusiveness_g <- (vcount(OO_g)-numisolates_g)/vcount(OO_g)             #Calculate inclusiveness
       inclusiveness_g
-      
-      
+            
       #. 4.9.Reachable pairs ---------- 464283 pairs, 522753 potential pairs > 0.8881499 reach
       #Display the network
       dist_g <- distances(OO_g)                                             #Get the distance matrix
@@ -130,17 +129,20 @@ plot(OO_g, layout = l_kk, vertex.label=NA)
       potentail_pairs_g
       reach_g <- observed_pairs_g/potentail_pairs_g                      #Proportion of reachable pairs
       reach_g
-      
-      
+            
       #. 4.10.Transitivity ---------- transitivity at 0.1550432
       
       transitivity_g <- transitivity(OO_g, type = "globalundirected")       #Calculate transitivity
       transitivity_g
+          
+
       
-      
-      
-## >> THIS IS TOO MESSY - WE MUST DROP SOME ARTISTS
-   #1 LETS DROP THE ARTISTS WITH NO COLLABORATION
-   #2 DECIDE WHAT TO DO WITH ARTIST_LOCATION > DROP OR COMPLEMENT
-      
-   
+# WHAT NEXT ?  ## >> THIS IS TOO MESSY - WE MUST DROP SOME ARTISTS
+   #1 LETS DROP THE ARTISTS WITH NO or less than x COLLABORATIONs
+   #2 narrow down the BBC artists to those with a certain amount of tracks
+   #3 limit the period further by decades / just look 90s
+   #4 6 degrees of Tupac ?
+   #5 select one artist for east coast and one for west coast and find the overlap 
+   #6 DECIDE WHAT TO DO WITH ARTIST_LOCATION > DROP OR COMPLEMENT
+   #7 data quality is still poor - There are obviously missint tracks in our DB and that should be a concern
+  
