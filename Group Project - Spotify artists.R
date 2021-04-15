@@ -66,41 +66,43 @@ plot(OO_g, layout = l_random, vertex.label=NA)
 l_kk <- layout_with_kk(OO_g)                                           #Kamada-Kawai layout
 plot(OO_g, layout = l_kk, vertex.label=NA) 
 
-#. 4 Lets look at the usual network stats:
+#. 4 Describe network 
+
+   #. 4.1 Lets  look at the usual network stats:
    
-      #. 4.1.Diameter = 1023
+      #. 4.1.1.Diameter = 1023
       d_g <- diameter(OO_g, directed = FALSE, unconnected = FALSE)           #Diameter
       get.diameter(OO_g)                                                     #Nodes on the diameter
       d_g
       
-      #. 4.2.APL  ---------- ?
+      #. 4.1.2.APL  ---------- ?
       #Unconnected network (apl is evalauted on the largest component)
       apl_g2  <- mean_distance(OO_g, directed = FALSE, unconnected = TRUE)  #APL
       dist_g2 <- distances(OO_g)                                            #Get the distance matrix
       dist_g2
       
       
-      #. 4.3.Density  ---------- 0.007812485 - really not a lot of edges vs all possible edges
+      #. 4.1.3.Density  ---------- 0.007812485 - really not a lot of edges vs all possible edges
       ed_g <- edge_density(OO_g)                                             #Calculate density
       ed_g
       
-      #. 4.4.Components  ---------- 29 components, including one huge 964 component, 1 x 13, and the rest <6
+      #. 4.1.4.Components  ---------- 29 components, including one huge 964 components, 1 x 13, and the rest <6
       #Unconnected network
       comp_g2 <- components(OO_g)                                           #Calculate the number of components
       comp_g2                                                             #Components                                                  
       
-      #. 4.5.Cutpoints/Bridges  ---------- 98 cutpoints
+      #. 4.1.5.Cutpoints/Bridges  ---------- 98 cutpoints
       cp_g <- articulation_points(OO_g)                                      #Cutpoints
       cp_g
       
       #'NOTE: There is no specific function in igraph to identify bridges,
       
-      #. 4.6.Point/line connectivity  > 0 > its already an unconnected component
+      #. 4.1.6.Point/line connectivity  > 0 > its already an unconnected component
       #Unconnected network
       pointc_g2 <- min_cut(OO_g)                                           #Point connectivity
       pointc_g2
       
-      #. 4.7.Cliques ---------- there a 788 3-cliques
+      #. 4.1.7.Cliques ---------- there a 788 3-cliques
       #help("cliques")                                                    #Explore this function
       #help("count_max_cliques")                                          #Explore this function
       
@@ -111,7 +113,7 @@ plot(OO_g, layout = l_kk, vertex.label=NA)
       numcliques_g
       
       
-      #. 4.8.Inclusiveness ---------- 18 isolates, and an inclusiveness of 0.9824
+      #. 4.1.8.Inclusiveness ---------- 18 isolates, and an inclusiveness of 0.9824
       
       numisolates_g <- sum(degree(OO_g)==0)                                 #Number of isolates
       numisolates_g
@@ -119,8 +121,9 @@ plot(OO_g, layout = l_kk, vertex.label=NA)
       isolates_g
       inclusiveness_g <- (vcount(OO_g)-numisolates_g)/vcount(OO_g)             #Calculate inclusiveness
       inclusiveness_g
-            
-      #. 4.9.Reachable pairs ---------- 464283 pairs, 522753 potential pairs > 0.8881499 reach
+      
+      
+      #. 4.1.9.Reachable pairs ---------- 464283 pairs, 522753 potential pairs > 0.8881499 reach
       #Display the network
       dist_g <- distances(OO_g)                                             #Get the distance matrix
       dist_g
@@ -130,13 +133,122 @@ plot(OO_g, layout = l_kk, vertex.label=NA)
       potentail_pairs_g
       reach_g <- observed_pairs_g/potentail_pairs_g                      #Proportion of reachable pairs
       reach_g
-            
-      #. 4.10.Transitivity ---------- transitivity at 0.1550432
+      
+      
+      #. 4.1.10.Transitivity ---------- transitivity at 0.1550432
       
       transitivity_g <- transitivity(OO_g, type = "globalundirected")       #Calculate transitivity
       transitivity_g
-          
+      
+      
+   #. 4.2 - Let's generate a random network to compare
+      
+      # 4.2.0 Initiate 
+      
+      g_rand <- erdos.renyi.game(nrow(uniquecollab), nrow(tracklist2), type = "gnm")   # (gnm since we set the number of edges, not the probability of edges which would require "gnp")      #Erdos-Renyi random network: N=same as our network, E=same as our network
+      #V(g_rand)$size  <- 5                                                     #Change the size of nodes
+      #V(g_rand)$color <- "lightblue"                                           #Change the color of nodes
+      #plot(g_rand, layout=layout_nicely, vertex.label=NA)   
+      
+      #. 4.2.1.Diameter = 1023
+      d_g_rand <- diameter(g_rand, directed = FALSE, unconnected = FALSE)           #Diameter
+      get.diameter(g_rand)                                                     #Nodes on the diameter
+      d_g_rand
+      
+      #. 4.2.2.APL  ---------- ?
+      #Unconnected network (apl is evalauted on the largest component)
+      apl_g_rand  <- mean_distance(g_rand, directed = FALSE, unconnected = TRUE)  #APL
+      apl_g_rand
+      #dist_g_rand <- distances(g_rand)                                            #Get the distance matrix
+      #dist_g_rand
+      
+      #. 4.2.3.Density  ---------- 0.007812485 - really not a lot of edges vs all possible edges
+      ed_g_rand <- edge_density(g_rand)                                             #Calculate density
+      ed_g_rand
+      
+      #. 4.2.4.Components  ---------- 29 components, including one huge 964 components, 1 x 13, and the rest <6
+      #Unconnected network
+      comp_g_rand <- components(g_rand)                                           #Calculate the number of components
+      comp_g_rand                                                             #Components                                                  
+      
+      #. 4.2.5.Cutpoints/Bridges  ---------- 98 cutpoints
+      cp_g_rand <- articulation_points(g_rand)                                      #Cutpoints
+      cp_g_rand
+      
+      #'NOTE: There is no specific function in igraph to identify bridges,
+      
+      #. 4.2.6.Point/line connectivity  > 0 > its already an unconnected component
+      #Unconnected network
+      pointc_g_rand <- min_cut(g_rand)                                           #Point connectivity
+      pointc_g_rand
+      
+      #. 4.2.7.Cliques ---------- there a 788 3-cliques
 
+      #cliques_g <- cliques(g_rand, min = 3)                                   #List of cliques
+      #cliques_g
+      numcliques_g_rand <- count_max_cliques(g_rand, min = 3)                      #Number of cliques
+      numcliques_g_rand
+      
+      
+      #. 4.2.8.Inclusiveness ---------- 18 isolates, and an inclusiveness of 0.9824
+      
+      numisolates_g_rand <- sum(degree(g_rand)==0)                                 #Number of isolates
+      numisolates_g_rand
+      isolates_g_rand <- V(g_rand)[degree(g_rand)==0]                                   #List of isolates
+      isolates_g_rand
+      inclusiveness_g_rand <- (vcount(g_rand)-numisolates_g)/vcount(g_rand)             #Calculate inclusiveness
+      inclusiveness_g_rand
+      
+      
+      #. 4.2.9.Reachable pairs ---------- 464283 pairs, 522753 potential pairs > 0.8881499 reach
+      #Display the network
+      dist_g_rand <- distances(g_rand)                                             #Get the distance matrix
+      dist_g_rand
+      observed_pairs_g_rand <- (sum(!is.infinite(distances(g_rand)))-vcount(g_rand))/2  #Observed reachable pairs
+      observed_pairs_g_rand
+      potentail_pairs_g_rand <- vcount(g_rand)*(vcount(g_rand)-1)/2                     #Potential reachable pairs
+      potentail_pairs_g_rand
+      reach_g_rand <- observed_pairs_g_rand/potentail_pairs_g_rand                      #Proportion of reachable pairs
+      reach_g_rand
+      
+      
+      #. 4.2.10.Transitivity ---------- transitivity at 0.1550432
+      
+      transitivity_g_rand <- transitivity(g_rand, type = "globalundirected")       #Calculate transitivity
+      transitivity_g_rand
+
+      
+   #. 4.3 Lets put this in a table 
+      
+      statistic <- c("Name", "Nodes", "Edges", "Components", "Diameter", "APL", "Density", "Cliques", "Inclusiveness", "Reachable Pairs", "Transitivity")
+      values <- c("Dataset", nrow(uniquecollab), nrow(tracklist2), comp_g2$no, d_g[1], "TBCAPL", round(ed_g[1],4), numcliques_g[1], round(inclusiveness_g[1],4), round(reach_g[1],4), round(transitivity_g[1],4))
+      random <- c("Random set", round(nrow(uniquecollab),1), nrow(tracklist2), comp_g_rand$no, d_g_rand[1], round(apl_g_rand,4), round(ed_g_rand[1],4), numcliques_g_rand[1], round(inclusiveness_g_rand[1],4), round(reach_g_rand[1],4), round(transitivity_g_rand[1],4))
+      df <- data.frame(statistic, values, random)
+      df
+   
+   #. 4.4 Lets get degree distribution histogram
+      
+      g2.deg <- degree(OO_g)
+      g2.deg.histogram <- as.data.frame(table(g2.deg))
+      g2.deg.histogram[,1] <- as.numeric(g2.deg.histogram[,1])
+      ggplot(g2.deg.histogram, aes(x = g2.deg, y = Freq)) +
+         geom_col() +
+         scale_x_continuous("Degree") +
+         scale_y_continuous("Frequency", trans = "log10") +
+         ggtitle("Degree Distribution (log-log)")
+
+   #. 4.5 Lets get betweenness distribution histogram
+      
+      g2.betw <- betweenness(OO_g)
+      g2.betw.histogram <- as.data.frame(table(g2.betw))
+      g2.betw.histogram[,1] <- as.numeric(g2.betw.histogram[,1])
+      ggplot(g2.betw.histogram, aes(x = g2.betw, y = Freq)) +
+         geom_col() +
+         scale_x_continuous("Betweenness") +
+         scale_y_continuous("Frequency", trans = "log10") +
+         ggtitle("Betweenness Distribution (log-log)")
+      
+      
       
 # WHAT NEXT ?  ## >> THIS IS TOO MESSY - WE MUST DROP SOME ARTISTS
    #1 LETS DROP THE ARTISTS WITH NO or less than x COLLABORATIONs
