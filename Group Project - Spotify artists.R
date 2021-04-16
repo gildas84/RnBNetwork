@@ -18,6 +18,15 @@ tracklist2 <- tracklist %>%
 tracklist2 <- tracklist2[!(tracklist2$CORRECTED_ARTISTS==""),]
 tracklist2
 
+out_list <- read_xlsx("Artists_filtered_out.xlsx", sheet = "OUT")
+out_list
+
+tracklist2 <- tracklist2 %>%
+  left_join(out_list, by = c("CORRECTED_ARTISTS" = "ARTIST 1")) %>%
+  filter(keep == "In") %>%
+  select("id", "CORRECTED_ARTISTS")
+tracklist2
+
 #. 1 Transform into appropriate network table
 
 PO <- as.matrix(table(tracklist2$id, tracklist2$CORRECTED_ARTISTS))       #Obtain project-organisation matrix from dataframe
