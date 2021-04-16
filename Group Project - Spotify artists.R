@@ -4,6 +4,8 @@ rm(list=ls())
 library(igraph)
 library(tidyverse)                                                     
 library(readxl)
+library(sna)
+library(influenceR)
 
 setwd("C:/Users/Gildas/OneDrive/MSC SUSDEV/NAI/NAI Group project") # adapt as necessary
 
@@ -248,8 +250,55 @@ plot(OO_g, layout = l_kk, vertex.label=NA)
          scale_y_continuous("Frequency", trans = "log10") +
          ggtitle("Betweenness Distribution (log-log)")
       
+   #. 4.6 Node-level Measures
       
+      #Degree/Closeness/Betweenness/Constraint/ENS
       
+      df.deg <- as.data.frame(g2.deg)
+      df.betw <- as.data.frame(g2.betw)
+      g2.close <- closeness(OO_g, normalized = FALSE)
+      df.close <- as.data.frame(g2.close) 
+      g2.const <- 1 - constraint(OO_g)
+      df.const <- as.data.frame(g2.const)
+      g2.ens <- influenceR::ens(OO_g) 
+      df.ens <- as.data.frame(g2.ens)
+
+      nodelevelmeasures <- data.frame(round(df.deg,0), round(df.betw,2), round(df.close,4), round(df.const,3), round(df.ens,3))
+      nodelevelmeasures_sorted <- nodelevelmeasures %>%
+         arrange(desc(g2.deg))
+      nodelevelmeasures_sorted
+
+
+    #. 4.7 Observed brokerage properties
+      
+      OO_g_adj <- get.adjacency(OO_g, sparse = F)                                   #Get the adjacency matrix
+      OO_g_adj
+      
+      ## Pending a better classification:
+      V(OO_g)$type <- c("east","west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
+                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
+                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
+                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
+                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
+                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
+                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
+                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
+                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
+                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
+                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
+                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
+                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
+                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
+                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
+                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
+                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
+                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
+                           "west","east","west","east","west","east", "west")
+      V(OO_g)$type
+      
+      br <- sna::brokerage(OO_g_adj, V(OO_g)$type)                                  #Calculate brokerage measures, 
+      summary(br) 
+
 # WHAT NEXT ?  ## >> THIS IS TOO MESSY - WE MUST DROP SOME ARTISTS
    #1 LETS DROP THE ARTISTS WITH NO or less than x COLLABORATIONs
    #2 narrow down the BBC artists to those with a certain amount of tracks
