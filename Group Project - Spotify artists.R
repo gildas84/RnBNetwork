@@ -88,7 +88,9 @@ plot(OO_g, layout = l_kk, vertex.label=NA)
       
       #. 4.1.2.APL  ---------- ?
       #Unconnected network (apl is evalauted on the largest component)
-      apl_g2  <- mean_distance(OO_g, directed = FALSE, unconnected = TRUE)  #APL
+      apl_g2 <- mean_distance(OO_g, directed = FALSE, unconnected = FALSE)    #APL
+      apl_g2
+
       dist_g2 <- distances(OO_g)                                            #Get the distance matrix
       dist_g2
       
