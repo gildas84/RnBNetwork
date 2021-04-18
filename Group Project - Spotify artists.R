@@ -4,8 +4,8 @@ rm(list=ls())
 library(igraph)
 library(tidyverse)                                                     
 library(readxl)
-library(sna)
-library(influenceR)
+#library(sna)
+#library(influenceR)
 
 setwd("C:/Users/Gildas/OneDrive/MSC SUSDEV/NAI/NAI Group project") # adapt as necessary
 
