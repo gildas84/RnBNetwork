@@ -104,6 +104,23 @@ plot(OO_g, layout = l_kk, vertex.label=NA)
       comp_g2 <- components(OO_g)                                           #Calculate the number of components
       comp_g2                                                             #Components                                                  
       
+              #removing elements not in the huge component 
+                  membership1 <- as.data.frame(row.names(OO))
+                  membership1
+                  membership2 <- as.data.frame(comp_g2$membership)
+                  colnames(membership2) <- c("cohort")
+                  membership2
+                  membership <- cbind(membership1, membership2$cohort)
+                  colnames(membership) <- c("artist", "cohort")
+                  membership
+      
+                  tracklist3 <- tracklist2 %>%
+                     left_join(membership, by = c("CORRECTED_ARTISTS" = "artist")) %>%
+                     filter(cohort == "1") %>%
+                     select("id", "CORRECTED_ARTISTS")
+                  tracklist3
+
+
       #. 4.1.5.Cutpoints/Bridges  ---------- 98 cutpoints
       cp_g <- articulation_points(OO_g)                                      #Cutpoints
       cp_g
