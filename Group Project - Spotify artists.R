@@ -234,7 +234,7 @@ plot(OO_g, layout = l_kk, vertex.label=NA)
    #. 4.3 Lets put this in a table 
       
       statistic <- c("Name", "Nodes", "Edges", "Components", "Diameter", "APL", "Density", "Cliques", "Inclusiveness", "Reachable Pairs", "Transitivity")
-      values <- c("Dataset", nrow(uniquecollab), nrow(tracklist2), comp_g2$no, d_g[1], "TBCAPL", round(ed_g[1],4), numcliques_g[1], round(inclusiveness_g[1],4), round(reach_g[1],4), round(transitivity_g[1],4))
+      values <- c("Dataset", nrow(uniquecollab), nrow(tracklist2), comp_g2$no, d_g[1], round(apl_g2,4), round(ed_g[1],4), numcliques_g[1], round(inclusiveness_g[1],4), round(reach_g[1],4), round(transitivity_g[1],4))
       random <- c("Random set", round(nrow(uniquecollab),1), nrow(tracklist2), comp_g_rand$no, d_g_rand[1], round(apl_g_rand,4), round(ed_g_rand[1],4), numcliques_g_rand[1], round(inclusiveness_g_rand[1],4), round(reach_g_rand[1],4), round(transitivity_g_rand[1],4))
       df <- data.frame(statistic, values, random)
       df
