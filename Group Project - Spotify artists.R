@@ -1,4 +1,3 @@
-
 #. 0 Retrieve librairy, environnent and main dataset
 
    rm(list=ls())
@@ -88,6 +87,7 @@
 
 #. 4 Describe network 
    
+   summary(OO_g)
    
    #. 4.1 Total network:
       #. 4.1.1 Lets  look at the usual network stats:
@@ -154,13 +154,11 @@
          transitivity_g2 <- transitivity(OO_g, type = "globalundirected")       #Calculate transitivity
          transitivity_g2
    
-         
-      
       #. 4.1.2 - Let's generate a random network to compare
       
          # 4.1.2.0 Initiate 
-         
-         g_rand <- erdos.renyi.game(nrow(uniquecollab), nrow(tracklist2), type = "gnm")   # (gnm since we set the number of edges, not the probability of edges which would require "gnp")      #Erdos-Renyi random network: N=same as our network, E=same as our network
+
+         g_rand <- erdos.renyi.game(nrow(uniquecollab), sum(uniquecollab), type = "gnm")   # (gnm since we set the number of edges, not the probability of edges which would require "gnp")      #Erdos-Renyi random network: N=same as our network, E=same as our network
          #V(g_rand)$size  <- 5                                                     #Change the size of nodes
          #V(g_rand)$color <- "lightblue"                                           #Change the color of nodes
          #plot(g_rand, layout=layout_nicely, vertex.label=NA)   
@@ -214,6 +212,7 @@
          inclusiveness_g_rand <- (vcount(g_rand)-numisolates_g_rand)/vcount(g_rand)             #Calculate inclusiveness
          inclusiveness_g_rand
          
+         
          #. 4.1.2.9.Reachable pairs ---------- 464283 pairs, 522753 potential pairs > 0.8881499 reach
          #Display the network
          dist_g_rand <- distances(g_rand)                                             #Get the distance matrix
@@ -232,10 +231,10 @@
          
       
       #. 4.1.3 Lets put this in a table 
-         
+      
          statistic <- c("Name", "Nodes", "Edges", "Components", "Diameter", "APL", "Density", "Cliques", "Inclusiveness", "Reachable Pairs", "Transitivity")
-         values <- c("Dataset", nrow(uniquecollab), nrow(tracklist2), comp_g2$no, d_g[1], round(apl_g2,4), round(ed_g2[1],4), numcliques_g2[1], round(inclusiveness_g2[1],4), round(reach_g2[1],4), round(transitivity_g2[1],4))
-         random <- c("Random set", round(nrow(uniquecollab),1), nrow(tracklist2), comp_g_rand$no, d_g_rand[1], round(apl_g_rand,4), round(ed_g_rand[1],4), numcliques_g_rand[1], round(inclusiveness_g_rand[1],4), round(reach_g_rand[1],4), round(transitivity_g_rand[1],4))
+         values <- c("Dataset", nrow(uniquecollab), sum(uniquecollab), comp_g2$no, d_g2[1], round(apl_g2,4), round(ed_g2[1],4), numcliques_g2[1], round(inclusiveness_g2[1],4), round(reach_g2[1],4), round(transitivity_g2[1],4))
+         random <- c("Random set", round(nrow(uniquecollab),1), sum(uniquecollab), comp_g_rand$no, d_g_rand[1], round(apl_g_rand,4), round(ed_g_rand[1],4), numcliques_g_rand[1], round(inclusiveness_g_rand[1],4), round(reach_g_rand[1],4), round(transitivity_g_rand[1],4))
          df <- data.frame(statistic, values, random)
          df
       
@@ -283,7 +282,7 @@
          tracklist3
          
          
-      
+            
       
       
       #. 4.2.1 - generate attributes, network and graph
@@ -316,6 +315,8 @@
             V(OO_g3)$size <- as.numeric(log(artist_tracks3$uniquetracks))
             
             plot(OO_g3, vertex.label=NA)
+            summary(OO_g3)
+            
             
             # Maybe add 
                # E(OO_g3)$size = number of collaborations
@@ -395,8 +396,8 @@
       #. 4.2.3 - Let's generate a random network to compare
          
          # 4.2.3.0 Initiate 
-         
-         g_rand3 <- erdos.renyi.game(nrow(uniquecollab3), nrow(tracklist3), type = "gnm")   # (gnm since we set the number of edges, not the probability of edges which would require "gnp")      #Erdos-Renyi random network: N=same as our network, E=same as our network
+            
+         g_rand3 <- erdos.renyi.game(nrow(uniquecollab3), sum(uniquecollab3), type = "gnm")   # (gnm since we set the number of edges, not the probability of edges which would require "gnp")      #Erdos-Renyi random network: N=same as our network, E=same as our network
          #V(g_rand)$size  <- 5                                                     #Change the size of nodes
          #V(g_rand)$color <- "lightblue"                                           #Change the color of nodes
          #plot(g_rand, layout=layout_nicely, vertex.label=NA)   
@@ -472,8 +473,8 @@
       #. 4.3 Lets put this in a table 
          
          statistic <- c("Name", "Nodes", "Edges", "Components", "Diameter", "APL", "Density", "Cliques", "Inclusiveness", "Reachable Pairs", "Transitivity")
-         values <- c("Dataset", nrow(uniquecollab3), nrow(tracklist3), comp_g3$no, d_g3[1], round(apl_g3,4), round(ed_g3[1],4), numcliques_g3[1], round(inclusiveness_g3[1],4), round(reach_g3[1],4), round(transitivity_g3[1],4))
-         random <- c("Random set", round(nrow(uniquecollab3),1), nrow(tracklist3), comp_g_rand3$no, d_g_rand3[1], round(apl_g_rand3,4), round(ed_g_rand3[1],4), numcliques_g_rand3[1], round(inclusiveness_g_rand3[1],4), round(reach_g_rand3[1],4), round(transitivity_g_rand3[1],4))
+         values <- c("Dataset", nrow(uniquecollab3), sum(uniquecollab3), comp_g3$no, d_g3[1], round(apl_g3,4), round(ed_g3[1],4), numcliques_g3[1], round(inclusiveness_g3[1],4), round(reach_g3[1],4), round(transitivity_g3[1],4))
+         random <- c("Random set", round(nrow(uniquecollab3),1), sum(uniquecollab3), comp_g_rand3$no, d_g_rand3[1], round(apl_g_rand3,4), round(ed_g_rand3[1],4), numcliques_g_rand3[1], round(inclusiveness_g_rand3[1],4), round(reach_g_rand3[1],4), round(transitivity_g_rand3[1],4))
          df3 <- data.frame(statistic, values, random)
          df3
    
@@ -558,6 +559,7 @@
       
       br <- sna::brokerage(OO_g_adj, V(OO_g)$type)                                  #Calculate brokerage measures, 
       summary(br)  
+      
       
 
 ## >> THIS IS TOO MESSY - WE MUST DROP SOME ARTISTS
