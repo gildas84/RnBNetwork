@@ -211,9 +211,8 @@
          numisolates_g_rand
          isolates_g_rand <- V(g_rand)[degree(g_rand)==0]                                   #List of isolates
          isolates_g_rand
-         inclusiveness_g_rand <- (vcount(g_rand)-numisolates_g)/vcount(g_rand)             #Calculate inclusiveness
+         inclusiveness_g_rand <- (vcount(g_rand)-numisolates_g_rand)/vcount(g_rand)             #Calculate inclusiveness
          inclusiveness_g_rand
-         
          
          #. 4.1.2.9.Reachable pairs ---------- 464283 pairs, 522753 potential pairs > 0.8881499 reach
          #Display the network
