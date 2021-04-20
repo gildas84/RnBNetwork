@@ -559,8 +559,27 @@
       
       br <- sna::brokerage(OO_g_adj, V(OO_g)$type)                                  #Calculate brokerage measures, 
       summary(br)  
-      
-      
+
+#. 5. exports the data as a csv file for Gephi/GML
+
+   #. 5.1  for Gephi nodes
+
+      #. 5.1.1 Back from adjacency matrix to dataset and edgelist   ----------
+      OO_df <- igraph::as_data_frame(OO_g, what = "both")                     
+      OO_df$vertices                                                          #Network as list of nodes with attributes
+      OO_df$edges                                                             #Network as list of edges 
+
+      write.csv(OO_df$edges,"Edges_list.csv")
+      write.csv(OO_df$vertices ,"Vertices_list.csv")
+
+         
+   #. 5.2  for GML file
+      #. 5.2.1 
+            
+      write_graph(OO_g, "network_with_names.gml", format = "gml")          #Save network data in GML
+
+
+
 
 ## >> THIS IS TOO MESSY - WE MUST DROP SOME ARTISTS
    #1 LETS DROP THE ARTISTS WITH NO or less than x COLLABORATIONs
