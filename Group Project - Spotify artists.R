@@ -61,43 +61,43 @@
    #. 4.1 Total network:
       #. 4.1.1 Lets  look at the usual network stats:
    
-         #. 4.1.1.1.Diameter = 1023
+         #. 4.1.1.1.Diameter 
          d_g2 <- diameter(OO_g, directed = FALSE, unconnected = FALSE)           #Diameter
          get.diameter(OO_g)                                                     #Nodes on the diameter
          d_g2
       
-         #. 4.1.1.2.APL  ---------- ?
+         #. 4.1.1.2.APL  ----------
 
          apl_g2 <- mean_distance(OO_g, directed = FALSE, unconnected = FALSE)    #APL
          apl_g2
          dist_g2 <- distances(OO_g)                                            #Get the distance matrix
          dist_g2
       
-         #. 4.1.1.3.Density  ---------- 0.007812485 - really not a lot of edges vs all possible edges
+         #. 4.1.1.3.Density  
          ed_g2 <- edge_density(OO_g)                                             #Calculate density
          ed_g2
       
-         #. 4.1.1.4.Components  ---------- 29 components, including one huge 964 components, 1 x 13, and the rest <6
+         #. 4.1.1.4.Components  
          #Unconnected network
          comp_g2 <- components(OO_g)                                           #Calculate the number of components
          comp_g2                                                             #Components                                                  
       
-         #. 4.1.1.5.Cutpoints/Bridges  ---------- 98 cutpoints
+         #. 4.1.1.5.Cutpoints/Bridges  
          cp_g2 <- articulation_points(OO_g)                                      #Cutpoints
          cp_g2
       
-         #. 4.1.1.6.Point/line connectivity  > 0 > its already an unconnected component
+         #. 4.1.1.6.Point/line connectivity  
          #Unconnected network
          pointc_g2 <- min_cut(OO_g)                                           #Point connectivity
          pointc_g2
          
-         #. 4.1.1.7.Cliques ---------- there a 788 3-cliques
+         #. 4.1.1.7.Cliques ---------
          #cliques_g <- cliques(Advanced_Materials, min = 3)                                   #List of cliques
          #cliques_g
          numcliques_g2 <- count_max_cliques(OO_g, min = 3)                      #Number of cliques
          numcliques_g2
          
-         #. 4.1.1.8.Inclusiveness ---------- 18 isolates, and an inclusiveness of 0.9824
+         #. 4.1.1.8.Inclusiveness
          
          numisolates_g2 <- sum(degree(OO_g)==0)                                 #Number of isolates
          numisolates_g2
@@ -107,7 +107,7 @@
          inclusiveness_g2
          
          
-         #. 4.1.1.9.Reachable pairs ---------- 464283 pairs, 522753 potential pairs > 0.8881499 reach
+         #. 4.1.1.9.Reachable pairs 
          #Display the network
          dist_g2 <- distances(OO_g)                                             #Get the distance matrix
          dist_g2
@@ -118,7 +118,7 @@
          reach_g2 <- observed_pairs_g2/potentail_pairs_g2                    #Proportion of reachable pairs
          reach_g2
          
-         #. 4.1.1.10.Transitivity ---------- transitivity at 0.1550432
+         #. 4.1.1.10.Transitivity
          
          transitivity_g2 <- transitivity(OO_g, type = "globalundirected")       #Calculate transitivity
          transitivity_g2
@@ -132,39 +132,37 @@
          #V(g_rand)$color <- "lightblue"                                           #Change the color of nodes
          #plot(g_rand, layout=layout_nicely, vertex.label=NA)   
          
-         #. 4.1.2.1.Diameter = 1023
+         #. 4.1.2.1.Diameter
          d_g_rand <- diameter(g_rand, directed = FALSE, unconnected = FALSE)           #Diameter
          get.diameter(g_rand)                                                     #Nodes on the diameter
          d_g_rand
          
-         #. 4.1.2.2.APL  ---------- ?
+         #. 4.1.2.2.APL
          #Unconnected network (apl is evalauted on the largest component)
          apl_g_rand  <- mean_distance(g_rand, directed = FALSE, unconnected = TRUE)  #APL
          apl_g_rand
          #dist_g_rand <- distances(g_rand)                                            #Get the distance matrix
          #dist_g_rand
          
-         #. 4.1.2.3.Density  ---------- 0.007812485 - really not a lot of edges vs all possible edges
+         #. 4.1.2.3.Density 
          ed_g_rand <- edge_density(g_rand)                                             #Calculate density
          ed_g_rand
          
-         #. 4.1.2.4.Components  ---------- 29 components, including one huge 964 components, 1 x 13, and the rest <6
+         #. 4.1.2.4.Components 
          #Unconnected network
          comp_g_rand <- components(g_rand)                                           #Calculate the number of components
          comp_g_rand                                                             #Components                                                  
          
-         #. 4.1.2.5.Cutpoints/Bridges  ---------- 98 cutpoints
+         #. 4.1.2.5.Cutpoints/Bridges
          cp_g_rand <- articulation_points(g_rand)                                      #Cutpoints
          cp_g_rand
-         
-         #'NOTE: There is no specific function in igraph to identify bridges,
          
          #. 4.1.2.6.Point/line connectivity  > 0 > its already an unconnected component
          #Unconnected network
          pointc_g_rand <- min_cut(g_rand)                                           #Point connectivity
          pointc_g_rand
          
-         #. 4.1.2.7.Cliques ---------- there a 788 3-cliques
+         #. 4.1.2.7.Cliques
          
          #cliques_g <- cliques(g_rand, min = 3)                                   #List of cliques
          #cliques_g
@@ -172,7 +170,7 @@
          numcliques_g_rand
          
          
-         #. 4.1.2.8.Inclusiveness ---------- 18 isolates, and an inclusiveness of 0.9824
+         #. 4.1.2.8.Inclusiveness
          
          numisolates_g_rand <- sum(degree(g_rand)==0)                                 #Number of isolates
          numisolates_g_rand
@@ -182,7 +180,7 @@
          inclusiveness_g_rand
          
          
-         #. 4.1.2.9.Reachable pairs ---------- 464283 pairs, 522753 potential pairs > 0.8881499 reach
+         #. 4.1.2.9.Reachable pairs
          #Display the network
          dist_g_rand <- distances(g_rand)                                             #Get the distance matrix
          dist_g_rand
@@ -193,7 +191,7 @@
          reach_g_rand <- observed_pairs_g_rand/potentail_pairs_g_rand                      #Proportion of reachable pairs
          reach_g_rand
       
-         #. 4.1.2.10.Transitivity ---------- transitivity at 0.1550432
+         #. 4.1.2.10.Transitivity
          
          transitivity_g_rand <- transitivity(g_rand, type = "globalundirected")       #Calculate transitivity
          transitivity_g_rand
@@ -300,9 +298,6 @@
          tracklist3
          
          
-            
-      
-      
       #. 4.2.1 - generate attributes, network and graph
          #. 4.2.1.1 - generate attributes
       
@@ -322,9 +317,15 @@
             colnames(artist_tracks3) <- c("uniquetracks")
             artist_tracks3
             
-      
-      
-         #. 4.2.1.1 - generate network and graph
+            #artist_location
+            artist_location3 = as.data.frame(row.names(uniquecollab3))
+            colnames(artist_location3) <- c("artist")
+            artist_location3 <- artist_location3 %>%
+               left_join(out_list, by = c("artist" = "ARTIST 1")) %>%
+               select("artist", "Coast", "Birthplace")
+            artist_location3
+            
+         #. 4.2.1.2 - generate network and graph
       
       
       
@@ -333,11 +334,8 @@
             plot(OO_g3, vertex.label=NA)
             summary(OO_g3)
             
-            
-            # Maybe add 
-               # E(OO_g3)$size = number of collaborations
-               # V(OO_g3)$color = location
-            
+         
+
       #. 4.2.2 Lets  look at the usual network stats:
          
          #. 4.2.2.1.Diameter = 1023
@@ -498,17 +496,34 @@
          
          V(OO_g3)$tracks <- as.numeric(log(artist_tracks3$uniquetracks))
          V(OO_g3)$degree <- degree(OO_g3, normalized = FALSE)                        #Degree (as anode attribute)
+         V(OO_g3)$degree_w <- strength(OO_g3, mode = "all", loops = F)              #weighted Degree (as anode attribute)
          V(OO_g3)$closeness   <- closeness(OO_g3, normalized = FALSE)                #Closeness (as anode attribute)
          V(OO_g3)$betweenness <- betweenness(OO_g3, normalized = FALSE)                #betweenness (as anode attribute)
          V(OO_g3)$constraint <- 1 - constraint(OO_g3) 
          V(OO_g3)$effective_net <- influenceR::ens(OO_g3)            
          ### V(OO_g3)$location <- as.numeric(log(artist_tracks3$uniquetracks))
+
+
+
+         V(OO_g3)$Coast <- as.array(artist_location3$Coast)
+         V(OO_g3)$Birthplace <- c(artist_location3$Birthplace)         
+
          
          V(OO_g3)$size <- V(OO_g3)$degree
+         
          plot(OO_g3, vertex.label=NA)
          summary(OO_g3)
 
-            # + .Brokerage measure cf seminar 6
+         
+         
+         OO_df3 <- igraph::as_data_frame(OO_g3, what = "both")                     
+         OO_df3$vertices                                                          #Network as list of nodes with attributes
+         OO_df3$edges                                                             #Network as list of edges 
+         
+         write.csv(OO_df3$edges,"Edges_list.csv")
+         write.csv(OO_df3$vertices ,"Vertices_list.csv")
+         
+            # + . add brokerage measure cf seminar 6
 
          ### 6 types of graphs 
          #   l_random <- layout.random(OO_g3)                                        #Random layout
@@ -593,7 +608,7 @@
 
    #. 5.1  for Gephi nodes
 
-      #. 5.1.1 Back from adjacency matrix to dataset and edgelist   ----------
+      #. 5.1.1 for the network
       OO_df <- igraph::as_data_frame(OO_g, what = "both")                     
       OO_df$vertices                                                          #Network as list of nodes with attributes
       OO_df$edges                                                             #Network as list of edges 
@@ -601,9 +616,26 @@
       write.csv(OO_df$edges,"Edges_list.csv")
       write.csv(OO_df$vertices ,"Vertices_list.csv")
 
-         
+
+      
+      #. 5.1.2 for the large component
+      OO_df3 <- igraph::as_data_frame(OO_g3, what = "both")                     
+      OO_df3$vertices                                                          #Network as list of nodes with attributes
+      OO_df3$edges                                                             #Network as list of edges 
+      
+      write.csv(OO_df3$edges,"Edges_list_large_comp.csv")
+      write.csv(OO_df3$vertices ,"Vertices_list_large_comp.csv")
+      
+      
+      
+               
    #. 5.2  for GML file
       #. 5.2.1 
             
       write_graph(OO_g, "network_with_names.gml", format = "gml")          #Save network data in GML
+      
+      write_graph(OO_g3, "network_large_comp_with_names.gml", format = "gml")          #Save network data in GML
+      
+      
+
 
