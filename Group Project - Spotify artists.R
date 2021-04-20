@@ -1,3 +1,4 @@
+
 #. 0 Retrieve librairy, environnent and main dataset
 
    rm(list=ls())
@@ -45,46 +46,14 @@
    artist_tracks = as.data.frame(diag(OO))
    colnames(artist_tracks) <- c("uniquetracks")
    artist_tracks
-   
-   #artist_location & artist_zone
-   #
-   #      metadata <- read_csv("top10k-spotify-artist-metadata.csv")
-   #      metadata = as.data.frame(metadata)
-   #      artist_location = as.data.frame(row.names(artist_tracks))
-   #      colnames(artist_location) <- c("artist")
-   #   
-   #      artist_loc = artist_location 
-   #      artist_loc <- artist_loc %>%
-   #         group_by(artist) %>%
-   #         left_join(metadata) %>% 
-   #         select ("city_2")
-   #      artist_loc
-   #   
-   #      # summary(artist_location)
-   #      # summary(metadata)
-   
-#. 3 Lets plot that
 
+#. 3  Try to plot
+   
    diag(OO) <- 0                                                          #Set diagonal to 0 (no self-loops)
    OO_g <- graph_from_adjacency_matrix(OO, mode = "undirected")            #Obtain graph from adjacency matrix
-   V(OO_g)$size <- as.numeric(log(artist_tracks$uniquetracks))
-   
-   
-   #list = c("West","East, ..404.... "West"")
-   #V(OO_g)$Source < list
-   
    plot(OO_g, vertex.label=NA)
    
-   #NOT REALLY NICE:
-   #l_random <- layout.random(OO_g)                                        #Random layout
-   #plot(OO_g, layout = l_random, vertex.label=NA)  
-
-   #l_circle <- layout.circle(OO_g)                                        #Circle layout
-   #plot(OO_g, layout = l_circle, vertex.label=NA)           
    
-   l_kk <- layout_with_kk(OO_g)                                           #Kamada-Kawai layout
-   plot(OO_g, layout = l_kk, vertex.label=NA) 
-
 #. 4 Describe network 
    
    summary(OO_g)
@@ -259,6 +228,55 @@
          scale_x_continuous("Betweenness") +
          scale_y_continuous("Frequency", trans = "log10") +
          ggtitle("Betweenness Distribution (log-log)")
+
+      
+      #. 4.1.6 Lets plot network
+      
+      diag(OO) <- 0                                                          #Set diagonal to 0 (no self-loops)
+      OO_g <- graph_from_adjacency_matrix(OO, mode = "undirected")            #Obtain graph from adjacency matrix
+      V(OO_g)$tracks <- as.numeric(log(artist_tracks$uniquetracks))
+      
+      ### V(OO_g)$location <- tbc
+      
+      V(OO_g)$degree <- degree(OO_g, normalized = FALSE)                        #Degree (as anode attribute)
+      V(OO_g)$closeness   <- closeness(OO_g, normalized = FALSE)                #Closeness (as anode attribute)
+      V(OO_g)$betweenness <- betweenness(OO_g, normalized = FALSE)                #betweenness (as anode attribute)
+      V(OO_g)$constraint <- - 1 - constraint(OO_g) 
+      V(OO_g)$effective_net <- influenceR::ens(OO_g)   
+      # + .Brokerage measure cf seminar 6
+      V(OO_g)$size <- V(OO_g)$tracks
+      plot(OO_g, vertex.label=NA)
+      
+      ### 6 types of graphs 
+      #   l_random <- layout.random(OO_g)                                        #Random layout
+      #   plot(OO_g, layout = l_random, vertex.label=NA)  
+      
+      #   l_circle <- layout.circle(OO_g)                                        #Circle layout
+      #   plot(OO_g, layout = l_circle, vertex.label=NA)           
+      
+      #   l_kk <- layout_with_kk(OO_g)                                           #Kamada-Kawai layout
+      #   plot(OO_g, layout = l_kk, vertex.label=NA) 
+      
+      #   l_fr <- layout_with_fr(OO_g)                                           #Fruchterman Reingold layout
+      #   plot(OO_g, layout = l_fr, vertex.label=NA)                                              #Display the network
+      
+      l_nicely <- layout_nicely(OO_g)                                        #igraph finds the best layout
+      plot(OO_g, layout = l_nicely, vertex.label=NA)                                          #Display the network
+      
+      #   l_opt <- layout_with_graphopt(OO_g, niter = 500, charge = 0.0001, mass = 25)     #Customised force-directed algorithm (useful for very large graphs)
+      #   plot(OO_g, layout = l_opt, vertex.label=NA) 
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       
             
    #. 4.2 - large component only
@@ -312,8 +330,6 @@
       
             diag(OO3) <- 0                                                          #Set diagonal to 0 (no self-loops)
             OO_g3 <- graph_from_adjacency_matrix(OO3, mode = "undirected")            #Obtain graph from adjacency matrix
-            V(OO_g3)$size <- as.numeric(log(artist_tracks3$uniquetracks))
-            
             plot(OO_g3, vertex.label=NA)
             summary(OO_g3)
             
@@ -402,39 +418,39 @@
          #V(g_rand)$color <- "lightblue"                                           #Change the color of nodes
          #plot(g_rand, layout=layout_nicely, vertex.label=NA)   
          
-         #. 4.2.1.Diameter = 1023
+         #. 4.2.3.1.Diameter = 1023
          d_g_rand3 <- diameter(g_rand3, directed = FALSE, unconnected = FALSE)           #Diameter
          get.diameter(g_rand3)                                                     #Nodes on the diameter
          d_g_rand3
          
-         #. 4.2.2.APL  ---------- ?
+         #. 4.2.3.2.APL  ---------- ?
          #Unconnected network (apl is evalauted on the largest component)
          apl_g_rand3  <- mean_distance(g_rand3, directed = FALSE, unconnected = TRUE)  #APL
          apl_g_rand3
          #dist_g_rand <- distances(g_rand)                                            #Get the distance matrix
          #dist_g_rand
          
-         #. 4.2.3.Density  ---------- 0.007812485 - really not a lot of edges vs all possible edges
+         #. 4.2.3.3.Density  ---------- 0.007812485 - really not a lot of edges vs all possible edges
          ed_g_rand3 <- edge_density(g_rand3)                                             #Calculate density
          ed_g_rand3
          
-         #. 4.2.4.Components  ---------- 29 components, including one huge 964 components, 1 x 13, and the rest <6
+         #. 4.2.3.4.Components  ---------- 29 components, including one huge 964 components, 1 x 13, and the rest <6
          #Unconnected network
          comp_g_rand3 <- components(g_rand3)                                           #Calculate the number of components
          comp_g_rand3                                                            #Components                                                  
          
-         #. 4.2.5.Cutpoints/Bridges  ---------- 98 cutpoints
+         #. 4.2.3.5.Cutpoints/Bridges  ---------- 98 cutpoints
          cp_g_rand3 <- articulation_points(g_rand3)                                      #Cutpoints
          cp_g_rand3
          
          #'NOTE: There is no specific function in igraph to identify bridges,
          
-         #. 4.2.6.Point/line connectivity  > 0 > its already an unconnected component
+         #. 4.2.3.6.Point/line connectivity  > 0 > its already an unconnected component
          #Unconnected network
          pointc_g_rand3 <- min_cut(g_rand3)                                           #Point connectivity
          pointc_g_rand3
          
-         #. 4.2.7.Cliques ---------- there a 788 3-cliques
+         #. 4.2.3.7.Cliques ---------- there a 788 3-cliques
    
          #cliques_g <- cliques(g_rand, min = 3)                                   #List of cliques
          #cliques_g
@@ -442,7 +458,7 @@
          numcliques_g_rand3
          
          
-         #. 4.2.8.Inclusiveness ---------- 18 isolates, and an inclusiveness of 0.9824
+         #. 4.2.3.8.Inclusiveness ---------- 18 isolates, and an inclusiveness of 0.9824
          
          numisolates_g_rand3 <- sum(degree(g_rand3)==0)                                 #Number of isolates
          numisolates_g_rand3
@@ -452,7 +468,7 @@
          inclusiveness_g_rand3
          
          
-         #. 4.2.9.Reachable pairs ---------- 464283 pairs, 522753 potential pairs > 0.8881499 reach
+         #. 4.2.3.9.Reachable pairs ---------- 464283 pairs, 522753 potential pairs > 0.8881499 reach
          #Display the network
          dist_g_rand3 <- distances(g_rand3)                                             #Get the distance matrix
          dist_g_rand3
@@ -464,13 +480,13 @@
          reach_g_rand3
          
          
-         #. 4.2.10.Transitivity ---------- transitivity at 0.1550432
+         #. 4.2.3.10.Transitivity ---------- transitivity at 0.1550432
          
          transitivity_g_rand3 <- transitivity(g_rand3, type = "globalundirected")       #Calculate transitivity
          transitivity_g_rand3
    
          
-      #. 4.3 Lets put this in a table 
+         #. 4.2.4 Lets put this in a table 
          
          statistic <- c("Name", "Nodes", "Edges", "Components", "Diameter", "APL", "Density", "Cliques", "Inclusiveness", "Reachable Pairs", "Transitivity")
          values <- c("Dataset", nrow(uniquecollab3), sum(uniquecollab3), comp_g3$no, d_g3[1], round(apl_g3,4), round(ed_g3[1],4), numcliques_g3[1], round(inclusiveness_g3[1],4), round(reach_g3[1],4), round(transitivity_g3[1],4))
@@ -478,14 +494,44 @@
          df3 <- data.frame(statistic, values, random)
          df3
    
-   
+         #. 4.2.5 Lets plot network and add attributes
          
-      
-      
-      
-      
-      
-      
+         V(OO_g3)$tracks <- as.numeric(log(artist_tracks3$uniquetracks))
+         V(OO_g3)$degree <- degree(OO_g3, normalized = FALSE)                        #Degree (as anode attribute)
+         V(OO_g3)$closeness   <- closeness(OO_g3, normalized = FALSE)                #Closeness (as anode attribute)
+         V(OO_g3)$betweenness <- betweenness(OO_g3, normalized = FALSE)                #betweenness (as anode attribute)
+         V(OO_g3)$constraint <- 1 - constraint(OO_g3) 
+         V(OO_g3)$effective_net <- influenceR::ens(OO_g3)            
+         ### V(OO_g3)$location <- as.numeric(log(artist_tracks3$uniquetracks))
+         
+         V(OO_g3)$size <- V(OO_g3)$degree
+         plot(OO_g3, vertex.label=NA)
+         summary(OO_g3)
+
+            # + .Brokerage measure cf seminar 6
+
+         ### 6 types of graphs 
+         #   l_random <- layout.random(OO_g3)                                        #Random layout
+         #   plot(OO_g3, layout = l_random, vertex.label=NA)  
+         
+         #   l_circle <- layout.circle(OO_g3)                                        #Circle layout
+         #   plot(OO_g3, layout = l_circle, vertex.label=NA)           
+         
+         #   l_kk <- layout_with_kk(OO_g3)                                           #Kamada-Kawai layout
+         #   plot(OO_g3, layout = l_kk, vertex.label=NA) 
+         
+         #   l_fr <- layout_with_fr(OO_g3)                                           #Fruchterman Reingold layout
+         #   plot(OO_g3, layout = l_fr, vertex.label=NA)                                              #Display the network
+         
+         l_nicely <- layout_nicely(OO_g3)                                        #igraph finds the best layout
+         plot(OO_g3, layout = l_nicely, vertex.label=NA)                                          #Display the network
+         
+         #   l_opt <- layout_with_graphopt(OO_g3, niter = 500, charge = 0.0001, mass = 25)     #Customised force-directed algorithm (useful for very large graphs)
+         #   plot(OO_g3, layout = l_opt, vertex.label=NA) 
+         
+         
+         
+         
    #. 4.4 Lets get degree distribution histogram
       
       g2.deg <- as.numeric(degree(OO_g, normalized = FALSE))
@@ -494,7 +540,7 @@
       ggplot(g2.deg.histogram, aes(x = g2.deg, y = Freq)) +
          geom_col() +
          scale_x_continuous("Degree") +
-         scale_y_continuous("Frequency", trans = "log10") +
+         scale_y_continuous("Frequency") +
          ggtitle("Degree Distribution (log-log)")
 
    #. 4.5 Lets get betweenness distribution histogram
@@ -505,7 +551,8 @@
       ggplot(g2.betw.histogram, aes(x = g2.betw, y = Freq)) +
          geom_col() +
          scale_x_continuous("Betweenness") +
-         scale_y_continuous("Frequency", trans = "log10") +
+         #scale_y_continuous("Frequency", trans = "log10") +
+         scale_y_continuous("Frequency") +
          ggtitle("Betweenness Distribution (log-log)")
 
    
@@ -535,31 +582,13 @@
       OO_g_adj <- get.adjacency(OO_g, sparse = F)                                   #Get the adjacency matrix
       OO_g_adj
       
-      V(OO_g)$type <- c("east","west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
-                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
-                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
-                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
-                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
-                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
-                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
-                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
-                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
-                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
-                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
-                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
-                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
-                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
-                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
-                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
-                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
-                           "west","east","west","east","west","east","west","east","west","east","west","east","west","east","west", "east","west","east","west", "east","west", "east",
-                           "west","east","west","east","west","east", "west")
-      V(OO_g)$type
+
       help("brokerage")                                                   #Explore this function
       
       br <- sna::brokerage(OO_g_adj, V(OO_g)$type)                                  #Calculate brokerage measures, 
       summary(br)  
 
+      
 #. 5. exports the data as a csv file for Gephi/GML
 
    #. 5.1  for Gephi nodes
@@ -577,39 +606,4 @@
       #. 5.2.1 
             
       write_graph(OO_g, "network_with_names.gml", format = "gml")          #Save network data in GML
-
-
-
-
-## >> THIS IS TOO MESSY - WE MUST DROP SOME ARTISTS
-   #1 LETS DROP THE ARTISTS WITH NO or less than x COLLABORATIONs
-   #2 narrow down the BBC artists to those with a certain amount of tracks
-   #3 limit the period further by decades / just look 90s
-   #4 6 degrees of Tupac ?
-   #5 select one artist for east coast and one for west coast and find the overlap 
-   #6 DECIDE WHAT TO DO WITH ARTIST_LOCATION > DROP OR COMPLEMENT
-   #7 data quality is still poor - There are obviously missint tracks in our DB and that should be a concern
-      
-   
-   
-   
-# WHAT NEXT ?
-
-      # find an independent list of top 10 90s rappers > we assume they should be central - are they ? - 
-      
-      
-summary(OO_g)
-artist_list = OO_g
-
-
-# add some attributes:
-
-   # size nodes by number of tracks
-   # region of artist
-
-# data quality (change in R code directly) 
-   # duplicate names, typos, ..
-   # should we limit the database ?
-   # do we keep this database
-
 
