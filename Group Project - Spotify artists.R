@@ -1,6 +1,8 @@
 
 #. 0 Retrieve librairy, environnent and main dataset
 
+#. 0 Retrieve librairy, environnent and main dataset
+
    rm(list=ls())
    library(igraph)
    library(tidyverse)                                                     
@@ -32,6 +34,9 @@
    OO <- t(PO)%*%PO                                                        #Adjacency matrix (artists-artists)
    #PP <- PO%*%t(PO)                                                        #Adjacency matrix (project-project)
 
+
+   
+   
 #. 2 Retrieve a few attributes
 
    #uniquecollab
@@ -47,6 +52,32 @@
    colnames(artist_tracks) <- c("uniquetracks")
    artist_tracks
 
+   #number_collab
+   
+   OObis <- OO
+   diag(OObis) <- 0 
+   
+   eList <- NULL
+   eList1 <- NULL
+   eList2 <- NULL
+   eList3 <- NULL
+   
+   for ( i in 1:nrow(OObis) ){
+      for ( j in 1:ncol(OObis)) {
+         eList1 <- c(eList1, rep(paste(dimnames(OObis)[[1]][i])))
+         eList2 <- c(eList2, rep(paste(dimnames(OObis)[[2]][j] )))
+         eList3 <- c(eList3, rep(paste(OObis[i,j])))
+      }
+   }
+   eList1 <- as.data.frame(eList1)
+   eList2 <- as.data.frame(eList2)
+   eList3 <- as.data.frame(eList3)
+   
+   number_collab = bind_cols(eList1, eList2, eList3)
+   number_collab <- number_collab[!(is.na(number_collab$eList3) | number_collab$eList3==0),] 
+   number_collab <- as.data.frame(number_collab)
+   
+   
 #. 3  Try to plot
    
    diag(OO) <- 0                                                          #Set diagonal to 0 (no self-loops)
@@ -243,6 +274,15 @@
       V(OO_g)$effective_net <- influenceR::ens(OO_g)   
       # + .Brokerage measure cf seminar 6
       V(OO_g)$size <- V(OO_g)$tracks
+      
+      
+      E(OO_g)$size <- V(OO_g)$tracks
+
+
+      
+            
+      
+      
       plot(OO_g, vertex.label=NA)
       
       ### 6 types of graphs 
@@ -324,7 +364,34 @@
                left_join(out_list, by = c("artist" = "ARTIST 1")) %>%
                select("artist", "Coast", "Birthplace")
             artist_location3
+
             
+            #number_collab
+            
+            OO3bis <- OO3
+            diag(OO3bis) <- 0 
+            
+            eList1 <- NULL
+            eList2 <- NULL
+            eList3 <- NULL
+            
+            for ( i in 1:nrow(OO3bis) ){
+               for ( j in 1:ncol(OO3bis)) {
+                  eList1 <- c(eList1, rep(paste(dimnames(OO3bis)[[1]][i])))
+                  eList2 <- c(eList2, rep(paste(dimnames(OO3bis)[[2]][j] )))
+                  eList3 <- c(eList3, rep(paste(OO3bis[i,j])))
+               }
+            }
+            eList1 <- as.data.frame(eList1)
+            eList2 <- as.data.frame(eList2)
+            eList3 <- as.data.frame(eList3)
+            
+            number_collab3 = bind_cols(eList1, eList2, eList3)
+            number_collab3 <- number_collab3[!(is.na(number_collab3$eList3) | number_collab3$eList3==0),] 
+            number_collab3 <- as.data.frame(number_collab3)
+            
+            
+                        
          #. 4.2.1.2 - generate network and graph
       
       
@@ -513,8 +580,8 @@
          
          
          OO_df3 <- igraph::as_data_frame(OO_g3, what = "both")                     
-         OO_df3$vertices                                                          #Network as list of nodes with attributes
-         OO_df3$edges                                                             #Network as list of edges 
+         #OO_df3$vertices                                                          #Network as list of nodes with attributes
+         #OO_df3$edges                                                             #Network as list of edges 
          
          write.csv(OO_df3$edges,"Edges_list.csv")
          write.csv(OO_df3$vertices ,"Vertices_list.csv")
@@ -577,6 +644,33 @@
             left_join(out_list, by = c("artist" = "ARTIST 1")) %>%
             select("artist", "Coast", "Birthplace")
          artist_location4
+         
+         
+         
+         #number_collab
+         
+         OO4bis <- OO4
+         diag(OO4bis) <- 0 
+         
+         eList1 <- NULL
+         eList2 <- NULL
+         eList3 <- NULL
+         
+         for ( i in 1:nrow(OO4bis) ){
+            for ( j in 1:ncol(OO4bis)) {
+               eList1 <- c(eList1, rep(paste(dimnames(OO4bis)[[1]][i])))
+               eList2 <- c(eList2, rep(paste(dimnames(OO4bis)[[2]][j] )))
+               eList3 <- c(eList3, rep(paste(OO4bis[i,j])))
+            }
+         }
+         eList1 <- as.data.frame(eList1)
+         eList2 <- as.data.frame(eList2)
+         eList3 <- as.data.frame(eList3)
+         
+         number_collab4 = bind_cols(eList1, eList2, eList3)
+         number_collab4 <- number_collab4[!(is.na(number_collab4$eList3) | number_collab4$eList3==0),] 
+         number_collab4 <- as.data.frame(number_collab4)
+         
          
          #. 4.3.1.2 - generate network and graph
          
@@ -664,7 +758,12 @@
          
          # 4.3.3.0 Initiate 
          
-         g_rand4 <- erdos.renyi.game(nrow(uniquecollab4), sum(uniquecollab4), type = "gnm")   # (gnm since we set the number of edges, not the probability of edges which would require "gnp")      #Erdos-Renyi random network: N=same as our network, E=same as our network
+         tstt <- sum(as.numeric(number_collab3$eList3))
+         tstt
+         tstt1 <- sum(as.numeric(number_collab4$eList3))/2
+         tstt1         
+         
+         g_rand4 <- erdos.renyi.game(nrow(uniquecollab4), sum(uniquecollab4)/2, type = "gnm")   # (gnm since we set the number of edges, not the probability of edges which would require "gnp")      #Erdos-Renyi random network: N=same as our network, E=same as our network
          #V(g_rand)$size  <- 5                                                     #Change the size of nodes
          #V(g_rand)$color <- "lightblue"                                           #Change the color of nodes
          #plot(g_rand, layout=layout_nicely, vertex.label=NA)   
@@ -740,8 +839,8 @@
          #. 4.3.4 Lets put this in a table 
          
          statistic <- c("Name", "Nodes", "Edges", "Components", "Diameter", "APL", "Density", "Cliques", "Inclusiveness", "Reachable Pairs", "Transitivity")
-         values <- c("Dataset", nrow(uniquecollab4), sum(uniquecollab4), comp_g4$no, d_g4[1], round(apl_g4,4), round(ed_g4[1],4), numcliques_g4[1], round(inclusiveness_g4[1],4), round(reach_g4[1],4), round(transitivity_g4[1],4))
-         random <- c("Random set", round(nrow(uniquecollab4),1), sum(uniquecollab4), comp_g_rand4$no, d_g_rand4[1], round(apl_g_rand4,4), round(ed_g_rand4[1],4), numcliques_g_rand4[1], round(inclusiveness_g_rand4[1],4), round(reach_g_rand4[1],4), round(transitivity_g_rand4[1],4))
+         values <- c("Dataset", nrow(uniquecollab4), sum(uniquecollab4)/2, comp_g4$no, d_g4[1], round(apl_g4,4), round(ed_g4[1],4), numcliques_g4[1], round(inclusiveness_g4[1],4), round(reach_g4[1],4), round(transitivity_g4[1],4))
+         random <- c("Random set", round(nrow(uniquecollab4),1), sum(uniquecollab4)/2, comp_g_rand4$no, d_g_rand4[1], round(apl_g_rand4,4), round(ed_g_rand4[1],4), numcliques_g_rand4[1], round(inclusiveness_g_rand4[1],4), round(reach_g_rand4[1],4), round(transitivity_g_rand4[1],4))
          df4 <- data.frame(statistic, values, random)
          df4
          
@@ -764,9 +863,6 @@
          summary(OO_g4)
          
          
-         
-
-         
          # + .Brokerage measure cf seminar 6
          
          ### 6 types of graphs 
@@ -787,7 +883,57 @@
          
          #   l_opt <- layout_with_graphopt(OO_g4, niter = 500, charge = 0.0001, mass = 25)     #Customised force-directed algorithm (useful for very large graphs)
          #   plot(OO_g4, layout = l_opt, vertex.label=NA) 
-                  
+         
+         
+         #. 4.3.6 Do we have a small world ?
+         
+         # if smallworldness > 1 it has a smallworld effect 
+         
+         library(qgraph)
+         smallworldness1 = smallworldness(OO_g, B = 1000, up = 0.995, lo = 0.005)
+         smallworldness1
+         
+         smallworldness3 = smallworldness(OO_g3, B = 1000, up = 0.995, lo = 0.005)
+         smallworldness3
+         
+         smallworldness4 = smallworldness(OO_g4, B = 1000, up = 0.995, lo = 0.005)
+         smallworldness4
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
          
    #. 4.4 Lets get degree distribution histogram
       
@@ -858,7 +1004,8 @@
       write.csv(OO_df$edges,"Edges_list.csv")
       write.csv(OO_df$vertices ,"Vertices_list.csv")
 
-     
+
+      
       #. 5.1.2 for the large component weighted
       OO_df3 <- igraph::as_data_frame(OO_g3, what = "both")                     
       OO_df3$vertices                                                          #Network as list of nodes with attributes
