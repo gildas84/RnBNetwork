@@ -1,8 +1,6 @@
 
 #. 0 Retrieve librairy, environnent and main dataset
 
-#. 0 Retrieve librairy, environnent and main dataset
-
    rm(list=ls())
    library(igraph)
    library(tidyverse)                                                     
@@ -77,7 +75,7 @@
    number_collab <- number_collab[!(is.na(number_collab$eList3) | number_collab$eList3==0),] 
    number_collab <- as.data.frame(number_collab)
    
-   
+
 #. 3  Try to plot
    
    diag(OO) <- 0                                                          #Set diagonal to 0 (no self-loops)
@@ -157,8 +155,8 @@
       #. 4.1.2 - Let's generate a random network to compare
       
          # 4.1.2.0 Initiate 
-
-         g_rand <- erdos.renyi.game(nrow(uniquecollab), sum(uniquecollab), type = "gnm")   # (gnm since we set the number of edges, not the probability of edges which would require "gnp")      #Erdos-Renyi random network: N=same as our network, E=same as our network
+         
+         g_rand <- erdos.renyi.game(nrow(uniquecollab), sum(uniquecollab)/2, type = "gnm")   # (gnm since we set the number of edges, not the probability of edges which would require "gnp")      #Erdos-Renyi random network: N=same as our network, E=same as our network
          #V(g_rand)$size  <- 5                                                     #Change the size of nodes
          #V(g_rand)$color <- "lightblue"                                           #Change the color of nodes
          #plot(g_rand, layout=layout_nicely, vertex.label=NA)   
@@ -390,6 +388,7 @@
             number_collab3 <- number_collab3[!(is.na(number_collab3$eList3) | number_collab3$eList3==0),] 
             number_collab3 <- as.data.frame(number_collab3)
             
+            write.csv(number_collab3,"number_collab3testtt.csv")
             
                         
          #. 4.2.1.2 - generate network and graph
@@ -478,7 +477,7 @@
          
          # 4.2.3.0 Initiate 
             
-            g_rand3 <- erdos.renyi.game(nrow(uniquecollab3), sum(uniquecollab3), type = "gnm")   # (gnm since we set the number of edges, not the probability of edges which would require "gnp")      #Erdos-Renyi random network: N=same as our network, E=same as our network
+            g_rand3 <- erdos.renyi.game(nrow(uniquecollab3), sum(uniquecollab3)/2, type = "gnm")   # (gnm since we set the number of edges, not the probability of edges which would require "gnp")      #Erdos-Renyi random network: N=same as our network, E=same as our network
          #V(g_rand)$size  <- 5                                                     #Change the size of nodes
          #V(g_rand)$color <- "lightblue"                                           #Change the color of nodes
          #plot(g_rand, layout=layout_nicely, vertex.label=NA)   
@@ -553,9 +552,11 @@
          
          #. 4.2.4 Lets put this in a table 
          
+         
+         
          statistic <- c("Name", "Nodes", "Edges", "Components", "Diameter", "APL", "Density", "Cliques", "Inclusiveness", "Reachable Pairs", "Transitivity")
-         values <- c("Dataset", nrow(uniquecollab3), sum(uniquecollab3), comp_g3$no, d_g3[1], round(apl_g3,4), round(ed_g3[1],4), numcliques_g3[1], round(inclusiveness_g3[1],4), round(reach_g3[1],4), round(transitivity_g3[1],4))
-         random <- c("Random set", round(nrow(uniquecollab3),1), sum(uniquecollab3), comp_g_rand3$no, d_g_rand3[1], round(apl_g_rand3,4), round(ed_g_rand3[1],4), numcliques_g_rand3[1], round(inclusiveness_g_rand3[1],4), round(reach_g_rand3[1],4), round(transitivity_g_rand3[1],4))
+         values <- c("Dataset", nrow(uniquecollab3), sum(uniquecollab3)/2, comp_g3$no, d_g3[1], round(apl_g3,4), round(ed_g3[1],4), numcliques_g3[1], round(inclusiveness_g3[1],4), round(reach_g3[1],4), round(transitivity_g3[1],4))
+         random <- c("Random set", round(nrow(uniquecollab3),1), sum(uniquecollab3)/2, comp_g_rand3$no, d_g_rand3[1], round(apl_g_rand3,4), round(ed_g_rand3[1],4), numcliques_g_rand3[1], round(inclusiveness_g_rand3[1],4), round(reach_g_rand3[1],4), round(transitivity_g_rand3[1],4))
          df3 <- data.frame(statistic, values, random)
          df3
    
@@ -671,6 +672,7 @@
          number_collab4 <- number_collab4[!(is.na(number_collab4$eList3) | number_collab4$eList3==0),] 
          number_collab4 <- as.data.frame(number_collab4)
          
+  
          
          #. 4.3.1.2 - generate network and graph
          
@@ -763,7 +765,7 @@
          tstt1 <- sum(as.numeric(number_collab4$eList3))/2
          tstt1         
          
-         g_rand4 <- erdos.renyi.game(nrow(uniquecollab4), sum(uniquecollab4)/2, type = "gnm")   # (gnm since we set the number of edges, not the probability of edges which would require "gnp")      #Erdos-Renyi random network: N=same as our network, E=same as our network
+         g_rand4 <- erdos.renyi.game(nrow(uniquecollab4), sum(as.numeric(number_collab4$eList3))/2, type = "gnm")   # (gnm since we set the number of edges, not the probability of edges which would require "gnp")      #Erdos-Renyi random network: N=same as our network, E=same as our network
          #V(g_rand)$size  <- 5                                                     #Change the size of nodes
          #V(g_rand)$color <- "lightblue"                                           #Change the color of nodes
          #plot(g_rand, layout=layout_nicely, vertex.label=NA)   
@@ -800,7 +802,7 @@
          pointc_g_rand4 <- min_cut(g_rand4)                                           #Point connectivity
          pointc_g_rand4
          
-         #. 4.3.3.7.Cliques ----------
+         #. 4.3.3.7.Cliques 
          
          #cliques_g <- cliques(g_rand, min = 3)                                   #List of cliques
          #cliques_g
@@ -839,8 +841,8 @@
          #. 4.3.4 Lets put this in a table 
          
          statistic <- c("Name", "Nodes", "Edges", "Components", "Diameter", "APL", "Density", "Cliques", "Inclusiveness", "Reachable Pairs", "Transitivity")
-         values <- c("Dataset", nrow(uniquecollab4), sum(uniquecollab4)/2, comp_g4$no, d_g4[1], round(apl_g4,4), round(ed_g4[1],4), numcliques_g4[1], round(inclusiveness_g4[1],4), round(reach_g4[1],4), round(transitivity_g4[1],4))
-         random <- c("Random set", round(nrow(uniquecollab4),1), sum(uniquecollab4)/2, comp_g_rand4$no, d_g_rand4[1], round(apl_g_rand4,4), round(ed_g_rand4[1],4), numcliques_g_rand4[1], round(inclusiveness_g_rand4[1],4), round(reach_g_rand4[1],4), round(transitivity_g_rand4[1],4))
+         values <- c("Dataset", nrow(uniquecollab4), sum(as.numeric(number_collab4$eList3))/2, comp_g4$no, d_g4[1], round(apl_g4,4), round(ed_g4[1],4), numcliques_g4[1], round(inclusiveness_g4[1],4), round(reach_g4[1],4), round(transitivity_g4[1],4))
+         random <- c("Random set", round(nrow(uniquecollab4),1), sum(as.numeric(number_collab4$eList3))/2, comp_g_rand4$no, d_g_rand4[1], round(apl_g_rand4,4), round(ed_g_rand4[1],4), numcliques_g_rand4[1], round(inclusiveness_g_rand4[1],4), round(reach_g_rand4[1],4), round(transitivity_g_rand4[1],4))
          df4 <- data.frame(statistic, values, random)
          df4
          
@@ -857,7 +859,7 @@
          V(OO_g4)$Birthplace <- c(artist_location4$Birthplace)         
          
          
-         V(OO_g4)$size <- V(OO_g4)$degree
+         V(OO_g4)$size <- V(OO_g4)$tracks
          
          plot(OO_g4, vertex.label=NA)
          summary(OO_g4)
@@ -900,95 +902,162 @@
          smallworldness4
          
          
+         smallworldness5 = smallworldness(g_rand4, B = 1000, up = 0.995, lo = 0.005)
+         smallworldness5
          
          
          
+         #. 4.7 Bonus  simulation 1000x 
          
          
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
+   
+            mynetwork.apl <- mean_distance(OO_g4)                               #APL between nodes
+            mynetwork.cl  <- transitivity(OO_g4, type="average")                #Clustering coefficent
+            mynetwork.compo <- components(OO_g4)
+            mynetwork.diams <- diameter(OO_g4, directed = FALSE, unconnected = FALSE) 
+            
+            N <- vcount(OO_g4)                                                  #Number of nodes in the network we created
+            E <- ecount(OO_g4)                                                  #Number of edges in the network we created
+            
+            sim <- 1000                                                          #How many simulations we want to run
+            apl <- numeric(sim)                                                  #APL
+            cl  <- numeric(sim)                                                  #Clustering coefficent
+            compo <- numeric(sim)   
+            diams <- numeric(sim)
+            degress <- numeric(sim)
+            numcli <- numeric(sim)
+            inclusivy <- numeric(sim)
+            reachpair <- numeric(sim)
+            smallwordy <- numeric(sim)
+            
+            for(i in 1:sim) {                                                    #We run the simulation
+               gr     <- erdos.renyi.game(N, E, type = "gnm")
+               apl[i] <- mean_distance(gr)
+                  y <- components(gr)
+               compo[i] <- y$no
+               cl[i]  <- transitivity(gr, type = "average")
+               diams[i] <- diameter(gr, directed = FALSE, unconnected = TRUE)
+               degress[i] <- edge_density(gr)
+               numcli[i] <- count_max_cliques(gr, min = 3)                      #Number of cliques
+               inclusivy[i] <- (vcount(gr)-sum(degree(gr)==0) )/(vcount(gr))
+               reachpair[i] <- ((sum(!is.infinite(distances(gr)))-vcount(gr))/2)/(vcount(gr)*(vcount(gr)-1)/2)
+               smallwordy[i] <- smallworldness(gr, B = 1000, up = 0.995, lo = 0.005)
+            }
+            
+            randomnet.apl <- mean(apl)
+            randomnet.cl  <- mean(cl)
+            randomnet.compo  <- mean(compo)
+            randomnet.diams <- mean(diams)
+            randomnet.degress <- mean(degress)
+            randomnet.numcli <- mean(numcli)
+            randomnet.inclusivy <-mean(inclusivy)
+            randomnet.reachpair <- mean(reachpair) 
+            randomnet.smallwordy <- mean(smallwordy)
+            
+            
+            N
+            E
+            randomnet.compo 
+            randomnet.diams
+            randomnet.apl
+            randomnet.cl
+            randomnet.degress
+            randomnet.numcli
+            randomnet.inclusivy
+            randomnet.reachpair
+            randomnet.smallwordy
+            
+            #Compare observed and random measures: some evidence of small-world effect:
+            gamma.apl <- mynetwork.apl/randomnet.apl
+            gamma.cl  <- mynetwork.cl/randomnet.cl
+            gamma.apl
+            gamma.cl
+            
+            
+            
+            
          
          
          
          
    #. 4.4 Lets get degree distribution histogram
       
-      g2.deg <- as.numeric(degree(OO_g, normalized = FALSE))
-      g2.deg.histogram <- as.data.frame(table(g2.deg))
-      g2.deg.histogram[,1] <- as.numeric(g2.deg.histogram[,1])
-      ggplot(g2.deg.histogram, aes(x = g2.deg, y = Freq)) +
+      g4.deg <- as.numeric(degree(OO_g4, normalized = FALSE))
+      g4.deg.histogram <- as.data.frame(table(g4.deg))
+      
+      g4.deg.histogram <- g4.deg.histogram
+      
+      g4.deg.histogram[,1] <- as.numeric(g4.deg.histogram[,1])
+      ggplot(g4.deg.histogram, aes(x = g4.deg, y = Freq)) +
          geom_col() +
          scale_x_continuous("Degree") +
          scale_y_continuous("Frequency") +
-         ggtitle("Degree Distribution (log-log)")
+         ggtitle("Degree Distribution")
 
+      
+      write.csv(g4.deg.histogram,"g4deghistogram.csv")
+      
+      
    #. 4.5 Lets get betweenness distribution histogram
       
-      g2.betw <- betweenness(OO_g, normalized = FALSE)
-      g2.betw.histogram <- as.data.frame(table(g2.betw))
-      g2.betw.histogram[,1] <- as.numeric(g2.betw.histogram[,1])
-      ggplot(g2.betw.histogram, aes(x = g2.betw, y = Freq)) +
+      g4.betw <- betweenness(OO_g4, normalized = FALSE)
+      g4.betw.histogram <- as.data.frame(table(g4.betw))
+      g4.betw.histogram[,1] <- as.numeric(g4.betw.histogram[,1])
+      ggplot(g4.betw.histogram, aes(x = g4.betw, y = Freq)) +
          geom_col() +
          scale_x_continuous("Betweenness") +
-         #scale_y_continuous("Frequency", trans = "log10") +
-         scale_y_continuous("Frequency") +
-         ggtitle("Betweenness Distribution (log-log)")
+         scale_y_continuous("Frequency", trans = "log10") +
+         #scale_y_continuous("Frequency") +
+         ggtitle("Betweenness Distribution")
 
+
+      #write.csv(g4.betw,"ggplot_g4.betw.csv")
+      
+      
+      
+      g4.betw <- betweenness(OO_g4, normalized = FALSE)
+      
+      
+      OO_g4thrid <- delete_node_attr(OO_g4, "degree", "degree_w", "closeness", "betweenness", "constraint", "effective_net", "Coast", "Birthplace", "size")
+      betweenness(OO_g4thrid, normalized = F)
+      closeness(OO_g4thrid, normalized = F)
+      
+      
    
    #. 4.6 Node-level Measures
       
       #Degree/Closeness/Betweenness/Constraint/ENS
       
-      df.deg <- as.data.frame(g2.deg)
-      df.betw <- as.data.frame(g2.betw)
-      g2.close <- closeness(OO_g, normalized = FALSE)
-      df.close <- as.data.frame(g2.close) 
-      g2.const <- 1 - constraint(OO_g)
-      df.const <- as.data.frame(g2.const)
-      g2.ens <- influenceR::ens(OO_g) 
-      df.ens <- as.data.frame(g2.ens)
+      df4.deg <- as.data.frame(g4.deg)
+      df4.betw <- as.data.frame(g4.betw)
+      g4.close <- closeness(OO_g4, normalized = FALSE)
+      df4.close <- as.data.frame(g4.close) 
+      g4.const <- 1 - constraint(OO_g4)
+      df4.const <- as.data.frame(g4.const)
+      g4.ens <- influenceR::ens(OO_g4) 
+      df4.ens <- as.data.frame(g4.ens)
 
-      nodelevelmeasures <- data.frame(round(df.deg,0), round(df.betw,2), round(df.close,4), round(df.const,3), round(df.ens,3))
+      nodelevelmeasures <- data.frame(round(df4.deg,0), round(df4.betw,2), round(df4.close,4), round(df4.const,3), round(df4.ens,3))
       nodelevelmeasures_sorted <- nodelevelmeasures %>%
-         arrange(desc(g2.deg))
+         arrange(desc(g4.deg))
       nodelevelmeasures_sorted
    
+      
+      write.csv(nodelevelmeasures_sorted ,"nodelevelmeasures_sorted.csv")
+      
+      
     #. 4.7 Observed brokerage properties
       
       library(sna)
       library(influenceR)
       
-      OO_g_adj <- get.adjacency(OO_g, sparse = F)                                   #Get the adjacency matrix
-      OO_g_adj
+      OO_g4_adj <- get.adjacency(OO_g4, sparse = F)                                   #Get the adjacency matrix
+      OO_g4_adj
       
 
       help("brokerage")                                                   #Explore this function
       
-      br <- sna::brokerage(OO_g_adj, V(OO_g)$type)                                  #Calculate brokerage measures, 
+      br <- sna::brokerage(OO_g4_adj, V(OO_g4)$Coast)                                  #Calculate brokerage measures, 
       summary(br)  
 
       
